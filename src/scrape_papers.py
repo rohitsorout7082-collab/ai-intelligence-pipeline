@@ -77,7 +77,7 @@ async def main():
     df = pd.DataFrame(all_papers[:TOTAL_PAPERS])
     output_path = "data/research_papers.csv"
     df.to_csv(output_path, index=False)
-    print(f"[✓] Successfully collected and saved {len(df)} papers to {output_path}!")
+    print(f" Successfully collected and saved {len(df)} papers to {output_path}!")
 
 if __name__ == "__main__":
     asyncio.run(main())
