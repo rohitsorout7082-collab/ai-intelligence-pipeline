@@ -2,7 +2,7 @@ import pandas as pd
 from rapidfuzz import fuzz, process
 import os
 
-# Seed list of known canonical AI organizations
+
 CANONICAL_ENTITIES = [
     "OpenAI", "Anthropic", "Mistral AI", "Google DeepMind", "Meta AI",
     "Microsoft", "Stability AI", "Hugging Face", "Cohere", "Perplexity AI",
@@ -19,12 +19,12 @@ def resolve_entity(raw_name: str, threshold: int = 75):
 
     raw_str = str(raw_name).strip()
     
-    # 1. Exact match check
+   
     for canonical in CANONICAL_ENTITIES:
         if raw_str.lower() == canonical.lower():
             return canonical, 100.0, "EXACT_MATCH"
 
-    # 2. Fuzzy match against canonical entities
+  
     match = process.extractOne(
         raw_str,
         CANONICAL_ENTITIES,
@@ -34,7 +34,7 @@ def resolve_entity(raw_name: str, threshold: int = 75):
     if match and match[1] >= threshold:
         return match[0], float(match[1]), "FUZZY_RESOLVED"
     
-    # Clean fallback (remove common legal suffixes)
+   
     cleaned = raw_str
     for suffix in [", Inc.", " Inc.", " LLC", " Ltd.", " Corporation", " Corp."]:
         if cleaned.endswith(suffix):
@@ -46,7 +46,7 @@ def resolve_entity(raw_name: str, threshold: int = 75):
 def main():
     print("[*] Running Entity Resolution Engine...")
     
-    # Collect raw names from startups and products datasets
+   
     raw_names = set()
     if os.path.exists("data/startups.csv"):
         df_startups = pd.read_csv("data/startups.csv")
@@ -56,7 +56,7 @@ def main():
         df_products = pd.read_csv("data/products.csv")
         raw_names.update(df_products["content.startupName"].dropna().unique())
 
-    # Add standard industry test cases to guarantee high fidelity demonstration
+    
     test_cases = [
         "OpenAI, Inc.", "Open-AI", "Anthropic PBC", "Mistral-AI",
         "Google DeepMind Ltd", "HuggingFace Inc", "Cohere AI",
