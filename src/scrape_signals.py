@@ -9,7 +9,7 @@ from email.utils import parsedate_to_datetime
 NEWS_OUTPUT_CSV = "data/news.csv"
 JOBS_OUTPUT_CSV = "data/jobs.csv"
 
-# 5 AI News Feeds
+
 NEWS_FEEDS = [
     {"source": "MIT Technology Review AI", "url": "https://www.technologyreview.com/feed/"},
     {"source": "VentureBeat AI", "url": "https://venturebeat.com/category/ai/feed/"},
@@ -18,7 +18,7 @@ NEWS_FEEDS = [
     {"source": "Wired AI", "url": "https://www.wired.com/feed/tag/ai/latest/rss"}
 ]
 
-# AI Jobs Feeds / Remote boards
+
 JOB_FEEDS = [
     {"source": "HackerNews Who is Hiring", "url": "https://news.ycombinator.com/rss"},
     {"source": "WeWorkRemotely AI", "url": "https://weworkremotely.com/categories/machine-learning.rss"},
@@ -52,7 +52,7 @@ def process_news_xml(source_name: str, xml_content: str, cutoff_time: datetime):
     except Exception:
         return records
 
-    # Standard RSS items
+    
     for item in root.findall(".//item"):
         title = item.findtext("title", "").strip()
         link = item.findtext("link", "").strip()
@@ -86,7 +86,7 @@ def process_job_xml(source_name: str, xml_content: str, cutoff_time: datetime):
         pub_date_str = item.findtext("pubDate", "")
         dt = parse_rfc_date(pub_date_str)
 
-        # Filter: 24h freshness + AI/ML keyword matching
+     
         if dt and dt >= cutoff_time:
             is_ai_related = any(k in title.lower() for k in ["ai", "machine learning", "engineer", "data", "deep learning"])
             if is_ai_related:
@@ -111,7 +111,7 @@ async def main():
     all_jobs = []
 
     async with aiohttp.ClientSession() as session:
-        # 1. Fetch News
+      
         news_tasks = [fetch_feed(session, meta) for meta in NEWS_FEEDS]
         news_results = await asyncio.gather(*news_tasks)
         for src_name, content in news_results:
@@ -119,7 +119,7 @@ async def main():
                 news_items = process_news_xml(src_name, content, cutoff_time)
                 all_news.extend(news_items)
 
-        # 2. Fetch Jobs
+       
         job_tasks = [fetch_feed(session, meta) for meta in JOB_FEEDS]
         job_results = await asyncio.gather(*job_tasks)
         for src_name, content in job_results:
