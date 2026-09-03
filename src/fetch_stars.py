@@ -70,7 +70,7 @@ async def main():
             df.at[idx, "content.github_stars"] = stars
 
     df.to_csv(OUTPUT_CSV, index=False)
-    print(f"[✓] Completed! Updated {OUTPUT_CSV} with live GitHub stars.")
+    print(f"Completed! Updated {OUTPUT_CSV} with live GitHub stars.")
 
 if __name__ == "__main__":
     asyncio.run(main())
