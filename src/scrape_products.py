@@ -89,7 +89,7 @@ async def main():
 
     df = pd.DataFrame(products[:TOTAL_TARGET])
     df.to_csv(OUTPUT_CSV, index=False)
-    print(f"[✓] Successfully saved {len(df)} products to {OUTPUT_CSV}!")
+    print(f" Successfully saved {len(df)} products to {OUTPUT_CSV}!")
 
 if __name__ == "__main__":
     asyncio.run(main())
